@@ -1,3 +1,7 @@
+import os
+os.environ['HOME'] = '/tmp'
+os.environ['SENTINELHUB_CACHE'] = '/tmp'
+
 from http.server import BaseHTTPRequestHandler
 import json
 from sentinelhub import (
@@ -20,6 +24,7 @@ class handler(BaseHTTPRequestHandler):
             config.sh_client_secret = CLIENT_SECRET
             config.sh_base_url      = 'https://sh.dataspace.copernicus.eu'
             config.sh_token_url     = 'https://identity.dataspace.copernicus.eu/auth/realms/CDSE/protocol/openid-connect/token'
+            config.cache_folder     = '/tmp'
 
             bbox = BBox([lon-0.05, lat-0.05, lon+0.05, lat+0.05], crs=CRS.WGS84)
             size = bbox_to_dimensions(bbox, resolution=60)
@@ -58,7 +63,7 @@ function evaluatePixel(s) {
             self.send_header('Content-type', 'application/json')
             self.send_header('Access-Control-Allow-Origin', '*')
             self.end_headers()
-            self.wfile.write(json.dumps(result).encode())
+            self.wfile.write(json.dumps(result, ensure_ascii=False).encode())
 
         except Exception as e:
             self.send_response(500)
