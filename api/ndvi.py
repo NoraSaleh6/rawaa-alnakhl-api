@@ -62,6 +62,8 @@ function evaluatePixel(s) {
             self.send_response(200)
             self.send_header('Content-type', 'application/json')
             self.send_header('Access-Control-Allow-Origin', '*')
+            self.send_header('Access-Control-Allow-Headers', 'Content-Type, Accept')
+            self.send_header('Access-Control-Allow-Credentials', 'false')
             self.end_headers()
             self.wfile.write(json.dumps(result, ensure_ascii=False).encode())
 
@@ -75,5 +77,7 @@ function evaluatePixel(s) {
     def do_OPTIONS(self):
         self.send_response(200)
         self.send_header('Access-Control-Allow-Origin', '*')
+        self.send_header('Access-Control-Allow-Headers', 'Content-Type, Accept')
+        self.send_header('Access-Control-Allow-Credentials', 'false')
         self.send_header('Access-Control-Allow-Methods', 'GET, OPTIONS')
         self.end_headers()
