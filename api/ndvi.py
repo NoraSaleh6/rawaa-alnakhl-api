@@ -9,7 +9,7 @@ from sentinelhub import (
     SentinelHubRequest, MimeType, bbox_to_dimensions
 )
 import numpy as np
-
+from datetime import datetime, timedelta
 CLIENT_ID     = 'sh-2cd34e24-e2d3-4c5d-bc65-4b42a4daf928'
 CLIENT_SECRET = 'ncYvC4pWU2Hmf7TV6YW1EwK71EQNovdE'
 
@@ -44,7 +44,10 @@ function evaluatePixel(s) {
                     data_collection=DataCollection.SENTINEL2_L2A.define_from(
                         'S2L2A', service_url='https://sh.dataspace.copernicus.eu'
                     ),
-                    time_interval=('2025-05-01', '2025-05-31'),
+                    time_interval=(
+                            (datetime.utcnow() - timedelta(days=30)).strftime('%Y-%m-%d'),
+                            datetime.utcnow().strftime('%Y-%m-%d')
+),
                     other_args={"dataFilter": {"maxCloudCoverage": 30}}
                 )],
                 responses=[SentinelHubRequest.output_response('default', MimeType.TIFF)],
